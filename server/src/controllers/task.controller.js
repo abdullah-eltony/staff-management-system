@@ -5,82 +5,88 @@ import {
 } from "../validator/taskValidator.js";
 
 class TaskController {
-  static async getAllTasks(req, res, next) {
+  constructor(taskService) {
+    this.taskService = taskService;
+  }
+
+  getAllTasks = async (req, res, next) => {
+    const {sub: id, role} = req.user;
     try {
-      const tasks = await TaskService.getAll(req.user);
+      const tasks = await this.taskService.getAll({ employee_id: id, role });
       res.json(tasks);
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  static async getTasksByEmployee(req, res, next) {
+  getTasksByEmployee = async (req, res, next) => {
     try {
-      const tasks = await TaskService.getTasksByEmployee(
+      const tasks = await this.taskService.getTasksByEmployee(
         req.params.employee_id
       );
       res.json(tasks);
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  static async getTaskById(req, res, next) {
+  getTaskById = async (req, res, next) => {
     try {
-      const task = await TaskService.getById(req.params.task_id);
+      const task = await this.taskService.getById(req.params.task_id);
       if (!task) return res.status(404).json({ error: "Task not found" });
       res.json(task);
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  static async createTask(req, res, next) {
+  createTask = async (req, res, next) => {
     try {
       const { error } = createTaskSchema.validate(req.body);
       if (error)
         return res.status(400).json({ error: error.details[0].message });
 
-      await TaskService.create(req.body);
+      await this.taskService.create(req.body);
       res.status(201).json({ message: "Task created successfully" });
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  static async updateTask(req, res, next) {
+  updateTask = async (req, res, next) => {
     try {
       const { error } = updateTaskSchema.validate(req.body);
       if (error)
         return res.status(400).json({ error: error.details[0].message });
-      const task = await TaskService.update(req.params.task_id, req.body);
+
+      const task = await this.taskService.update(req.params.task_id, req.body);
       if (!task) return res.status(404).json({ error: "Task not found" });
       res.json(task);
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  static async changeTaskStatus(req, res, next) {
+  changeTaskStatus = async (req, res, next) => {
     try {
       const { status } = req.body;
-      await TaskService.updateStatus(req.params.task_id, status);
+      await this.taskService.updateStatus(req.params.task_id, status);
       res.json({ message: "Task status updated successfully" });
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  static async deleteTask(req, res, next) {
+  deleteTask = async (req, res, next) => {
     try {
-      const deleted = await TaskService.delete(req.params.task_id);
+      const deleted = await this.taskService.delete(req.params.task_id);
       if (!deleted) return res.status(404).json({ error: "Task not found" });
       res.status(204).json({ message: "Task deleted successfully" });
     } catch (err) {
-
       next(err);
     }
-  }
+  };
 }
 
-export default TaskController;
+// export an instance for consistency
+export default new TaskController(TaskService);
