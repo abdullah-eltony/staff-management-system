@@ -48,7 +48,7 @@ export function useEmployees() {
   };
 
   const handleEdit = (employee: Employee) => {
-    setSelectedEmployee({ ...employee, password: "" }); 
+    setSelectedEmployee({ ...employee, password: "" });
     setIsModalOpen(true);
   };
 

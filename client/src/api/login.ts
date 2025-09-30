@@ -10,12 +10,12 @@ export async function login({
 }) {
   try {
     const res = await axiosInstance.post("/login", { email, password });
-
-    const { token,role, employee_id } = res.data;
+    const { token, employee } = res.data;
 
     localStorage.setItem("token", token);
-    localStorage.setItem("user_role",role)
-    localStorage.setItem("user_id", employee_id);
+    localStorage.setItem("user_role", employee.role);
+    localStorage.setItem("user_id", employee.id);
+    localStorage.setItem("user", JSON.stringify(employee));
 
     return res.data;
   } catch (err) {

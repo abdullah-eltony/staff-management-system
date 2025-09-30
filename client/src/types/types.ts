@@ -36,6 +36,6 @@ export type Task = {
   status: "pending" | "in_progress" | "done";
   employee_email: string; 
   created_at: string;
-  assigned_employee_id: number | null;
+  assigned_employee_id: number | null | string;
   updated_at: string;
 };
