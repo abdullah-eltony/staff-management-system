@@ -6,13 +6,14 @@ type ModalProps = {
   children: ReactNode;
   onClose: () => void;
   onSave?: () => void;
+  loading?: boolean;
 };
 
-export default function Modal({ isOpen, title, children, onClose, onSave }: ModalProps) {
+export default function Modal({ isOpen, title, children, onClose, onSave, loading }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         
@@ -30,7 +31,7 @@ export default function Modal({ isOpen, title, children, onClose, onSave }: Moda
               onClick={onSave}
               className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
             >
-              Save
+              {loading ? "Saving..." : "Save"}
             </button>
           )}
         </div>
