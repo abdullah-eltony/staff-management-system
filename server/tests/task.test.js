@@ -35,9 +35,6 @@ describe('Task API', () => {
     token = res.body.token;
   });
 
-  afterAll(async () => {
-    await pool.end();
-  });
 
   it('should create a new task', async () => {
     const res = await request(app)

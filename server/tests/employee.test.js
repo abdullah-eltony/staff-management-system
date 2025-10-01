@@ -32,10 +32,6 @@ describe('Employee API', () => {
     token = res.body.token;
   });
 
-  afterAll(async () => {
-    await pool.end();
-  });
-
   it('should return unauthorized when no token', async () => {
     const res = await request(app)
       .post('/employees/add')
