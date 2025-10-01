@@ -1,4 +1,3 @@
-import { createEmployeeSchema, updateEmployeeSchema } from "../validator/employeeValidator.js";
 import EmployeeService from "../services/employee.service.js";
 
 class EmployeeController {
@@ -30,9 +29,6 @@ class EmployeeController {
   // Create new employee
   createEmployee = async (req, res, next) => {
     try {
-      const { error } = createEmployeeSchema.validate(req.body);
-      if (error) return res.status(400).json({ error: error.details[0].message });
-
       await this.service.create(req.body);
       res.status(201).json({ message: "Employee created successfully" });
     } catch (err) {
@@ -43,9 +39,6 @@ class EmployeeController {
   // Update employee
   updateEmployee = async (req, res, next) => {
     try {
-      const { error } = updateEmployeeSchema.validate(req.body);
-      if (error) return res.status(400).json({ error: error.details[0].message });
-
       const employee = await this.service.update(req.params.id, req.body);
       if (!employee) return res.status(404).json({ error: "Employee not found" });
       res.json(employee);

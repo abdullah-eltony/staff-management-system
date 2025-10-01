@@ -3,13 +3,20 @@ import TaskController from "../controllers/task.controller.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../middlewares/roleMiddleware.js";
 import apiKeyLogger from "../middlewares/apiKeyLogger.js";
+import Validator from "../middlewares/ValidatorMiddleware.js";
+import { createTaskSchema, updateTaskSchema } from "../validator/taskValidator.js";
 const taskRouter = express.Router();
+
+// Validators
+const createTaskValidator = new Validator(createTaskSchema);
+const updateTaskValidator = new Validator(updateTaskSchema);
 
 // add new task
 taskRouter.post(
   "/add",
   apiKeyLogger,
   authMiddleware,
+  createTaskValidator.validate,
   authorizeRoles("admin", "manager"),
   TaskController.createTask
 );
@@ -43,6 +50,7 @@ taskRouter.put(
   "/:task_id",
   apiKeyLogger,
   authMiddleware,
+  updateTaskValidator.validate,
   authorizeRoles("admin", "manager"),
   TaskController.updateTask
 );
