@@ -4,7 +4,7 @@ import EditTaskModal from "../components/modals/EditTaskModal";
 import AddTaskModal from "../components/modals/AddTaskModal";
 import { isAdmin } from "../utils";
 import { useTasks } from "../hooks/useTask";
-import { Plus, PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export default function Tasks() {
   const {
