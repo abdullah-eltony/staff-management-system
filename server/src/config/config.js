@@ -12,6 +12,7 @@ const config = {
         port: Number(process.env.DB_PORT) || 5432,
     },
     JWT_SECRET:process.env.JWT_SECRET,
+    JWT_REFRESH_SECRET:process.env.JWT_REFRESH_SECRET,
     OPENAI_API_KEY:process.env.OPENAI_API_KEY
 
 };

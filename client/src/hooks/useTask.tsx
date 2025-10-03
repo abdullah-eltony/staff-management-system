@@ -43,6 +43,9 @@ export function useTasks() {
 
   const handleSave = async () => {
     if (!selectedTask) return;
+    if(selectedTask.assigned_employee_id === '') {
+      selectedTask.assigned_employee_id = null;
+    }
     try {
       const { task_id, updated_at, created_at, employee_email, ...payload } = selectedTask;
       const updatedTask = await updateTask(task_id, payload);
@@ -56,8 +59,7 @@ export function useTasks() {
 
   const handleAddTask = async (task: TaskPayload) => {
     try {
-      const added = await addTask(task);
-      setTasks((prev) => [...prev, added]);
+      await addTask(task);
       await fetchData();
     } catch (err: any) {
       if (err?.response?.data) {

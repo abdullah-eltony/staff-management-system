@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { type TaskDetails } from "../types/types";
 import { User, Mail, Briefcase, ClipboardList } from "lucide-react";
-import { getTaskById } from "../api/task";
+import { getTaskById, updateTaskStatus } from "../api/task";
 import { createReport, type ReportPayload } from "../api/report";
 import CreateReportModal from "../components/modals/CreateReportModal";
 
@@ -12,12 +12,14 @@ export default function TaskDetails() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [status, setStatus] = useState<string>("");
 
   useEffect(() => {
     const fetchTask = async () => {
       try {
         const data = await getTaskById(Number(id));
         setTask(data);
+        setStatus(data.status);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -31,6 +33,16 @@ export default function TaskDetails() {
 
     fetchTask();
   }, [id]);
+
+  const handleStatusChange = async(newStatus: string) => {
+    if (!task) return;
+    try {
+      setStatus(newStatus);
+      await updateTaskStatus(task.task_id, newStatus);
+    } catch (error) {
+      setError("Failed to update status");
+    }
+  }
 
   const handleCreateReport = async (reportData: ReportPayload) => {
     await createReport(reportData);
@@ -75,17 +87,29 @@ export default function TaskDetails() {
         </p>
         <p>
           <span className="font-semibold">Status: </span>
-          <span
-            className={`ml-2 px-3 py-1 rounded-full text-white text-sm ${
-              task.status === "completed"
-                ? "bg-green-500"
-                : task.status === "in_progress"
-                ? "bg-yellow-500"
-                : "bg-gray-500"
+            <select
+            name="status"
+            id="status"
+            className={`border rounded px-2 py-1 ${
+              status === "completed"
+              ? "text-green-600"
+              : status  === "in_progress"
+              ? "text-yellow-600"
+              : "text-red-400"
             }`}
-          >
-            {task.status}
-          </span>
+            value={status}
+            onChange={(e) => handleStatusChange(e.target.value)}
+            >
+            <option className="text-gray-600" value="pending">
+              pending
+            </option>
+            <option className="text-yellow-600" value="in_progress">
+              in_progress
+            </option>
+            <option className="text-green-600" value="completed">
+              completed
+            </option>
+            </select>
         </p>
       </div>
 

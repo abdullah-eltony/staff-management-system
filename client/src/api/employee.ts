@@ -1,7 +1,9 @@
 import axiosInstance from "./axiosInstance";
 import type {  Employee} from "../types/types";
 
+
 export async function getEmployees(): Promise<Employee[]> {
+  
   try {
     const res = await axiosInstance.get<Employee[]>("/employees");
     return res.data;
@@ -22,6 +24,7 @@ export async function addEmployee(employee: Omit<Employee, "employee_id">): Prom
 }
 
 export async function updateEmployee(id: number, employee: Partial<Employee>): Promise<Employee> {
+  console.log(employee)
   try {
     const res = await axiosInstance.put<Employee>(`/employees/${id}`, employee);
     return res.data;

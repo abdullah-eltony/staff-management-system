@@ -46,10 +46,6 @@ describe('Report API', () => {
     taskId = 1;
   });
 
-  afterAll(async () => {
-    await pool.end();
-  });
-
   it('should create a new report', async () => {
     const res = await request(app)
       .post('/reports/create')

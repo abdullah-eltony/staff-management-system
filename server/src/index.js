@@ -7,14 +7,14 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization","x-api-key"],
   })
 );
 
 // auth Router
 import authRouter from "./routes/auth.route.js";
-app.use("/login", authRouter);
+app.use("/auth", authRouter);
 
 // Employee Routes
 import employeeRouter from "./routes/employee.route.js";
@@ -30,6 +30,7 @@ app.use("/reports", reportRouter);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
+  console.log(err)
   res.status(err.status || 500).json({ error: err.message });
 });
 
