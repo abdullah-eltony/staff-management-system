@@ -1,10 +1,42 @@
-export default function Header() {
+import { Menu } from "lucide-react"; // أي أيقونة menu من مكتبة icons
+
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
+
   return (
     <header className="bg-blue-700 text-white p-4 shadow-md flex items-center justify-between">
-      <h1 className="text-xl font-bold">Employee Management System</h1>
+      {/* left side */}
+      <div className="flex items-center space-x-4">
+        {/* زرار المينيو يظهر بس على الموبايل */}
+        <button
+          className="md:hidden p-2 rounded hover:bg-blue-600 focus:outline-none"
+          onClick={onMenuClick}
+          aria-label="Toggle sidebar"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        <h1 className="text-xl font-bold">Red White Tech</h1>
+      </div>
+
+      {/* right side */}
       <div className="flex justify-end">
-        <span className="mr-4">Welcome, {user.name}</span>
+        <div className="relative group">
+          <button className="focus:outline-none flex items-center">
+            <span className="mr-4 bg-amber-600 p-2 w-8 h-8 text-center leading-4 rounded-full border-2 border-white">
+              {user?.name ? user.name.toUpperCase()[0] : "?"}
+            </span>
+          </button>
+          <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity z-10">
+            <div className="px-4 py-2 border-b">
+              <div className="font-bold">{user?.name || "Guest"}</div>
+              <div className="text-sm text-gray-600">{user?.email || "no email"}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );

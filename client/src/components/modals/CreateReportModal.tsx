@@ -15,13 +15,11 @@ export default function CreateReportModal({
   onClose,
   onSave,
   taskId,
-  employeeId,
 }: Props) {
   const [report, setReport] = useState<ReportPayload>({
     title: "",
     content: "",
     task_id: taskId || 0,
-    employee_id: employeeId || 0,
   });
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +35,6 @@ export default function CreateReportModal({
         title: "",
         content: "",
         task_id: taskId || 0,
-        employee_id: employeeId || 0,
       });
       onClose();
     } catch (err) {

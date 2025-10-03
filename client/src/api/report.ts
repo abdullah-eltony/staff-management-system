@@ -5,7 +5,6 @@ export type Report = {
   id: number;
   task_id: number;
   task_title: string;
-  employee_id: number;
   employee_name: string;
   title: string;
   created_at: string;

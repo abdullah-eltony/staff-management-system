@@ -3,8 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { type TaskDetails } from "../types/types";
 import { User, Mail, Briefcase, ClipboardList } from "lucide-react";
 import { getTaskById, updateTaskStatus } from "../api/task";
-import { createReport, type ReportPayload } from "../api/report";
 import CreateReportModal from "../components/modals/CreateReportModal";
+import { useReports } from "../hooks/userReport";
 
 export default function TaskDetails() {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +13,7 @@ export default function TaskDetails() {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [status, setStatus] = useState<string>("");
+  const {handleCreateReport} = useReports()
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -44,9 +45,6 @@ export default function TaskDetails() {
     }
   }
 
-  const handleCreateReport = async (reportData: ReportPayload) => {
-    await createReport(reportData);
-  };
 
   if (loading) return <p className="text-gray-500">Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -134,7 +132,6 @@ export default function TaskDetails() {
         onClose={() => setIsModalOpen(false)}
         onSave={handleCreateReport}
         taskId={task.task_id}
-        employeeId={task.assigned_employee_id}
       />
     </div>
   );
