@@ -9,17 +9,8 @@ class ReportController {
 
   createReport = async (req, res, next) => {
     try {
-      const { task_id, employee_id, title, content } = req.body;
-      const ai_summary = await summarizeText(content);
-
-      const report = await this.reportService.create({
-        task_id,
-        employee_id,
-        title,
-        content,
-        ai_summary,
-      });
-      res.status(201).json(report);
+      await this.reportService.create(req.body);
+      res.status(201).json({message:"report created succesfully"});
     } catch (err) {
       if (err.code === "23503") {
         // foreign_key_violation
