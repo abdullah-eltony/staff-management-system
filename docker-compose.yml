@@ -1,4 +1,4 @@
-
+version: "3.9"
 services:
   db:
     image: postgres:15
@@ -10,7 +10,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - server_pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
 
   server:
     build: ./server
@@ -27,30 +28,21 @@ services:
       DB_NAME: ${DB_NAME}
       PORT: ${SERVER_PORT}
       JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
     depends_on:
       - db
     restart: on-failure:5
 
-  frontend-build:
-    build: ./client
-    container_name: frontend-build
-    command: npm run build
-    volumes:
-      - frontend-dist:/app/dist
-
   nginx:
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
+      dockerfile: ./client/Dockerfile
+    container_name: nginx-container
     ports:
       - "8080:80"
-    volumes:
-      - frontend-dist:/usr/share/nginx/html
     depends_on:
-      - frontend-build
+      - server
 
 volumes:
-  server_pgdata:
-    external: true
-  frontend-dist:
+  pgdata:

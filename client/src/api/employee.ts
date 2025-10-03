@@ -3,6 +3,7 @@ import type {  Employee} from "../types/types";
 
 
 export async function getEmployees(): Promise<Employee[]> {
+  console.log(localStorage.getItem("role"))
   
   try {
     const res = await axiosInstance.get<Employee[]>("/employees");
@@ -24,7 +25,6 @@ export async function addEmployee(employee: Omit<Employee, "employee_id">): Prom
 }
 
 export async function updateEmployee(id: number, employee: Partial<Employee>): Promise<Employee> {
-  console.log(employee)
   try {
     const res = await axiosInstance.put<Employee>(`/employees/${id}`, employee);
     return res.data;
