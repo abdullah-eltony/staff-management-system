@@ -4,6 +4,7 @@ import EditTaskModal from "../components/modals/EditTaskModal";
 import AddTaskModal from "../components/modals/AddTaskModal";
 import { isAdmin } from "../utils";
 import { useTasks } from "../hooks/useTask";
+import { Plus, PlusCircle } from "lucide-react";
 
 export default function Tasks() {
   const {
@@ -28,11 +29,11 @@ export default function Tasks() {
 
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Tasks</h2>
+      <div className="flex justify-between items-start flex-col sm:flex-row mb-4 gap-3">
+        <h2 className="text-2xl font-semibold flex flex-1">Tasks</h2>
 
         {isAdmin() && (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 justify-between w-full sm:w-auto">
             <input
               type="number"
               placeholder="Filter by Employee ID..."
@@ -42,9 +43,12 @@ export default function Tasks() {
             />
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex gap-2 items-center"
             >
-              Add Task
+              <span className="hidden sm:inline-block">Add Task</span>
+              <span>
+                <Plus size={18}/>
+              </span>
             </button>
           </div>
         )}
