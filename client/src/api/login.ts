@@ -9,13 +9,14 @@ export async function login({
   password: string;
 }) {
   try {
-    const res = await axiosInstance.post("/login", { email, password });
-    const { token, employee } = res.data;
+    const res = await axiosInstance.post("/auth/login", { email, password });
+    const { accessToken, refreshToken,user } = res.data;
 
-    localStorage.setItem("token", token);
-    localStorage.setItem("user_role", employee.role);
-    localStorage.setItem("user_id", employee.id);
-    localStorage.setItem("user", JSON.stringify(employee));
+    localStorage.setItem("token", accessToken);
+    localStorage.setItem("refreshToken",refreshToken);
+    localStorage.setItem("user_role", user.role);
+    localStorage.setItem("user_id", user.id);
+    localStorage.setItem("user", JSON.stringify(user));
 
     return res.data;
   } catch (err) {

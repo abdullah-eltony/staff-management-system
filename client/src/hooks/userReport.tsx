@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getReports, deleteReport, type Report } from "../api/report";
+import { getReports, createReport, deleteReport, type Report, type ReportPayload } from "../api/report";
 
 export function useReports() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -30,5 +30,14 @@ export function useReports() {
     }
   };
 
-  return { reports, loading, fetchReports, handleDelete };
+  const handleCreateReport = async (data: ReportPayload) => {
+    try {
+      await createReport(data);
+    } catch (error) {
+      console.error("Error insert report:", error);
+    }
+  };
+
+
+  return { reports, loading, fetchReports, handleDelete, handleCreateReport };
 }

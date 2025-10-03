@@ -2,7 +2,7 @@ import { useReports } from "../hooks/userReport";
 import { ReportsTable } from "../components/tables/ReportsTable";
 
 export default function Reports() {
-  const { reports, loading, handleDelete } = useReports();
+  const { reports, loading, handleDelete} = useReports();
 
   if (loading) return <div className="p-6">Loading...</div>;
 
