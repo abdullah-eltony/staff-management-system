@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react"; // أي أيقونة menu من مكتبة icons
+import { Menu } from "lucide-react"; 
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -11,7 +11,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
     <header className="bg-blue-700 text-white p-4 shadow-md flex items-center justify-between">
       {/* left side */}
       <div className="flex items-center space-x-4">
-        {/* زرار المينيو يظهر بس على الموبايل */}
+        {/* toggle side bar button*/}
         <button
           className="md:hidden p-2 rounded hover:bg-blue-600 focus:outline-none"
           onClick={onMenuClick}
@@ -26,7 +26,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
       <div className="flex justify-end">
         <div className="relative group">
           <button className="focus:outline-none flex items-center">
-            <span className="mr-4 bg-amber-600 p-2 w-8 h-8 text-center leading-4 rounded-full border-2 border-white">
+            <span className="bg-amber-600 w-8 h-8 text-cente rounded-full border-2 border-white flex items-center justify-center">
               {user?.name ? user.name.toUpperCase()[0] : "?"}
             </span>
           </button>
